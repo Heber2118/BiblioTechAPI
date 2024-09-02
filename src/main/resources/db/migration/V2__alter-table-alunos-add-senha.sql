@@ -1,0 +1,1 @@
+alter table alunos add senha varchar(20) not null;

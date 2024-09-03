@@ -4,11 +4,11 @@ import bibliotech.com.api.alunos.Aluno;
 import bibliotech.com.api.alunos.AlunoRepository;
 import bibliotech.com.api.alunos.DadosCadastroAluno;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -28,6 +28,12 @@ public class AlunoController {
         var uri = uriBuilder.path("/pacientes {id}").buildAndExpand(aluno.getId()).toUri();
 
 
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<Aluno>> listarAluno(Pageable paginacao) {
+        Page<Aluno> alunos = alunoRepository.findAll(paginacao);
+        return ResponseEntity.ok(alunos);
     }
 
 }

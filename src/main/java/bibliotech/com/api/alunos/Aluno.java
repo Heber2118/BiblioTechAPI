@@ -19,6 +19,7 @@ public class Aluno {
     private Long id;
     private String nome;
     private String email;
+    @Column(name = "ra")
     private String RA;
     private String senha;
 

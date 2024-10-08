@@ -27,14 +27,22 @@ public class AlunoController {
     @Autowired
     private AutenticaService autenticaService;
 
-    @PostMapping("/cadastrar")
-    @Transactional
-    public void cadastraAluno(@RequestBody DadosCadastroAluno dados, UriComponentsBuilder uriBuilder){
-    var aluno = new Aluno(dados);
-    alunoRepository.save(aluno);
-        var uri = uriBuilder.path("/alunos {id}").buildAndExpand(aluno.getId()).toUri();
-    }
+//    @PostMapping("/cadastrar")
+//    @Transactional
+//    public void cadastraAluno(@RequestBody DadosCadastroAluno dados, UriComponentsBuilder uriBuilder){
+//    var aluno = new Aluno(dados);
+//    alunoRepository.save(aluno);
+//        var uri = uriBuilder.path("/alunos {id}").buildAndExpand(aluno.getId()).toUri();
+//    }
 
+    @PostMapping(value = "/cadastrar", consumes = "application/json")
+    @Transactional
+    public ResponseEntity<?> cadastraAluno(@RequestBody DadosCadastroAluno dados, UriComponentsBuilder uriBuilder) {
+        var aluno = new Aluno(dados);
+        alunoRepository.save(aluno);
+        var uri = uriBuilder.path("/alunos/{id}").buildAndExpand(aluno.getId()).toUri();
+        return ResponseEntity.created(uri).body(Map.of("success", true));
+    }
 
     @GetMapping
     public ResponseEntity<Page<Aluno>> listarAluno(Pageable paginacao) {

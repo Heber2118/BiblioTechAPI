@@ -1,16 +1,10 @@
 package bibliotech.com.api.controller;
 
-import bibliotech.com.api.alunos.Aluno;
-import bibliotech.com.api.alunos.AlunoRepository;
-import bibliotech.com.api.alunos.DadosCadastroAluno;
-import bibliotech.com.api.dto.dadosLogin;
-import bibliotech.com.api.service.AutenticaService;
+import bibliotech.com.api.dto.DadosCadastroAluno;
+import bibliotech.com.api.dto.DadosLogin;
+import bibliotech.com.api.service.AlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -23,45 +17,30 @@ import java.util.Map;
 public class AlunoController {
 
     @Autowired
-    private AlunoRepository alunoRepository;
-    @Autowired
-    private AutenticaService autenticaService;
-
-//    @PostMapping("/cadastrar")
-//    @Transactional
-//    public void cadastraAluno(@RequestBody DadosCadastroAluno dados, UriComponentsBuilder uriBuilder){
-//    var aluno = new Aluno(dados);
-//    alunoRepository.save(aluno);
-//        var uri = uriBuilder.path("/alunos {id}").buildAndExpand(aluno.getId()).toUri();
-//    }
+    private AlunoService alunoService; // Chama a camada de serviço
 
     @PostMapping(value = "/cadastrar", consumes = "application/json")
     @Transactional
     public ResponseEntity<?> cadastraAluno(@RequestBody DadosCadastroAluno dados, UriComponentsBuilder uriBuilder) {
-        var aluno = new Aluno(dados);
-        alunoRepository.save(aluno);
-        var uri = uriBuilder.path("/alunos/{id}").buildAndExpand(aluno.getId()).toUri();
-        return ResponseEntity.created(uri).body(Map.of("success", true));
+        return alunoService.fazCadastro(dados, uriBuilder); // Chama o método da AlunoService
     }
 
-    @GetMapping
-    public ResponseEntity<Page<Aluno>> listarAluno(Pageable paginacao) {
-        Page<Aluno> alunos = alunoRepository.findAll(paginacao);
-        return ResponseEntity.ok(alunos);
-    }
+//    @GetMapping
+//    public ResponseEntity<Page<Aluno>> listarAluno(Pageable paginacao) {
+//        Page<Aluno> alunos = alunoService.listarAlunos(paginacao); // Método a ser implementado na AlunoService
+//        return ResponseEntity.ok(alunos);
+//    }
 
     @PostMapping("/login")
     @Transactional
-   public ResponseEntity<?> fazLogin(@RequestBody dadosLogin dadosLogin){
-        try{
-            DadosCadastroAluno aluno = autenticaService.fazLogin(dadosLogin.RA(), dadosLogin.senha());
-            return ResponseEntity.ok(Map.of("success", true));
-        }
-        catch (AuthenticationException e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("success", false));
+    public ResponseEntity<?> fazLogin(@RequestBody DadosLogin dadosLogin) {
+        try {
+            // Chama o método de login passando RA e senha
+            DadosCadastroAluno aluno = alunoService.fazLogin(dadosLogin.RA(), dadosLogin.senha());
+            return ResponseEntity.ok(aluno);
+        } catch (IllegalArgumentException e) {
+            // Retorna uma resposta de erro se o login falhar
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
-
-
-
 }

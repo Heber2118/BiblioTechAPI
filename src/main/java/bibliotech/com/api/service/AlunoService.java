@@ -3,7 +3,6 @@ package bibliotech.com.api.service;
 import bibliotech.com.api.model.Aluno;
 import bibliotech.com.api.repository.AlunoRepository;
 import bibliotech.com.api.dto.DadosCadastroAluno;
-import bibliotech.com.api.enums.Acesso;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

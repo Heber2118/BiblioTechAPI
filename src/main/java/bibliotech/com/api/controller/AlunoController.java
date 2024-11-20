@@ -27,7 +27,7 @@ public class AlunoController {
 
 //    @GetMapping
 //    public ResponseEntity<Page<Aluno>> listarAluno(Pageable paginacao) {
-//        Page<Aluno> alunos = alunoService.listarAlunos(paginacao); // Método a ser implementado na AlunoService
+//        Page<Aluno> alunos = alunoService.listarAlunos(paginacao); Método a ser implementado na AlunoService
 //        return ResponseEntity.ok(alunos);
 //    }
 

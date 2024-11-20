@@ -21,10 +21,13 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
+    private String tipo_usuario;
 
-    public Usuario(String nome, String email, String senha) {
+    public Usuario(String nome, String email, String senha, String tipo_usuario){
         this.nome = nome;
         this.email = email;
         this.senha = senha;
+        this.tipo_usuario = tipo_usuario;
+
     }
 }

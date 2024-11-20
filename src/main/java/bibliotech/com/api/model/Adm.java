@@ -8,6 +8,6 @@ import jakarta.persistence.Entity;
 public class Adm extends Usuario {
 
     public Adm(String nome, String email, String senha) {
-        super(nome, email, senha);  // Agora não passamos o 'acesso'
+        // Agora não passamos o 'acesso'
     }
 }

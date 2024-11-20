@@ -17,7 +17,6 @@ public class Aluno extends Usuario {
     private String RA;
 
     public Aluno(DadosCadastroAluno dados) {
-        super(dados.nome(), dados.email(), dados.senha());  // Agora não passamos o 'acesso'
         this.RA = dados.RA();
     }
 }

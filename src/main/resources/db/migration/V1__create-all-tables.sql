@@ -1,5 +1,5 @@
 CREATE TABLE Usuarios (
-    id VARCHAR(50) PRIMARY KEY,
+    id int AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     senha VARCHAR(255) NOT NULL,
@@ -7,16 +7,14 @@ CREATE TABLE Usuarios (
 );
 CREATE TABLE Alunos (
     ra VARCHAR(50) PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    id_usuario VARCHAR(50),
+    curso varchar(100) not null,
+    id_usuario int,
     FOREIGN KEY (id_usuario) REFERENCES Usuarios(id)
 );
 CREATE TABLE ADM (
     id VARCHAR(50) PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    id_usuario VARCHAR(50),
+    turno ENUM('MANHA', 'TARDE', 'NOTURNO'),
+    id_usuario int,
     FOREIGN KEY (id_usuario) REFERENCES Usuarios(id)
 );
 CREATE TABLE Livros (
@@ -28,19 +26,19 @@ CREATE TABLE Livros (
 );
 CREATE TABLE Emprestimos (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario VARCHAR(50),
+    id_usuario int,
     id_livro INT,
     DataInicio DATE,
     DataFim DATE,
     DataDevolucao DATE,
-    multa DOUBLE DEFAULT 0.00,
+    Multa DOUBLE DEFAULT 0.00,
     FOREIGN KEY (id_usuario) REFERENCES Usuarios(id),
     FOREIGN KEY (id_livro) REFERENCES Livros(id)
 );
 CREATE TABLE Multas (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario VARCHAR(50),
+    id_usuario int,
     valor DOUBLE,
     status ENUM('pendente', 'paga') DEFAULT 'pendente',
-    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id)
+    FOREIGN KEY (id_usuario) references usuarios(id)
 );

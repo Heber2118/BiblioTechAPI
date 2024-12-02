@@ -1,44 +1,45 @@
-CREATE TABLE Usuarios (
-    id int AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    senha VARCHAR(255) NOT NULL,
-    tipo_usuario ENUM('Aluno', 'ADM')
-);
 CREATE TABLE Alunos (
-    ra VARCHAR(50) PRIMARY KEY,
-    curso varchar(100) not null,
-    id_usuario int,
-    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id)
+    RA VARCHAR(255) PRIMARY KEY,
+    Nome VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    Senha VARCHAR(255) NOT NULL,
+    Curso VARCHAR(255) NOT NULL
 );
+
 CREATE TABLE ADM (
-    id VARCHAR(50) PRIMARY KEY,
-    turno ENUM('MANHA', 'TARDE', 'NOTURNO'),
-    id_usuario int,
-    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id)
+    IdADM INT AUTO_INCREMENT PRIMARY KEY,
+    Nome VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    Senha VARCHAR(255) NOT NULL,
+    Cargo VARCHAR(100)
 );
-CREATE TABLE Livros (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    titulo VARCHAR(255) NOT NULL,
-    autor VARCHAR(255),
-    categoria VARCHAR(100),
-    estoque INT CHECK (estoque >= 0)
+
+CREATE TABLE Livro (
+    id_livro INT AUTO_INCREMENT PRIMARY KEY,
+    Titulo VARCHAR(200) NOT NULL,
+    Autor VARCHAR(100),
+    Genero VARCHAR(100),
+    Estoque INT NOT NULL CHECK (Estoque >= 0)
 );
-CREATE TABLE Emprestimos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario int,
-    id_livro INT,
-    DataInicio DATE,
-    DataFim DATE,
+
+CREATE TABLE Emprestimo (
+    IdEmprestimo INT AUTO_INCREMENT PRIMARY KEY,
+    RA VARCHAR(255) NOT NULL, -- Alterado para VARCHAR(255) para combinar com a tabela Alunos
+    id_livro INT NOT NULL,
+    IdADM INT, -- Adicionando o administrador responsável
+    DataInicio DATE NOT NULL,
+    DataFim DATE NOT NULL,
     DataDevolucao DATE,
-    Multa DOUBLE DEFAULT 0.00,
-    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id),
-    FOREIGN KEY (id_livro) REFERENCES Livros(id)
+    FOREIGN KEY (RA) REFERENCES Alunos(RA),
+    FOREIGN KEY (id_livro) REFERENCES Livro(id_livro),
+    FOREIGN KEY (IdADM) REFERENCES ADM(IdADM) -- Relacionamento com a tabela ADM
 );
-CREATE TABLE Multas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario int,
-    valor DOUBLE,
-    status ENUM('pendente', 'paga') DEFAULT 'pendente',
-    FOREIGN KEY (id_usuario) references usuarios(id)
+
+CREATE TABLE Multa (
+    IdMulta INT AUTO_INCREMENT PRIMARY KEY,
+    IdEmprestimo INT NOT NULL,
+    Valor DECIMAL(10, 2) NOT NULL,
+    Status ENUM('pendente', 'paga') DEFAULT 'pendente',
+    DataPagamento DATE,
+    FOREIGN KEY (IdEmprestimo) REFERENCES Emprestimo(IdEmprestimo)
 );

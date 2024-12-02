@@ -1,13 +1,23 @@
 package bibliotech.com.api.model;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
 @Entity
-@DiscriminatorValue("ADM")
-public class Adm extends Usuario {
+@Table(name = "adm")
+public class Adm{
+    @Id
+    @Getter @Setter
+    private int idAdm;
+    @Getter @Setter
+    private String nome;
+    @Getter @Setter
+    private String email;
+    @Getter @Setter
+    private String senha;
+    @Getter @Setter
+    private String cargo;
 
-    public Adm(String nome, String email, String senha) {
-        // Agora não passamos o 'acesso'
-    }
 }
